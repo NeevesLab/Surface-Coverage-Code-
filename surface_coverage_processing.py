@@ -20,14 +20,14 @@ def surface_coverage_time_series(filepath,threshEval=False, bw_eval=False,show_a
                                   highT=27,lowT=20,fill_holes=False,stats=False,show_linear=False,zero_index_time=0,
                                   t_lag_level=.01,zero_index=None,low_bw=1,high_bw=255, edge=True,interval=15,vsi=True,
                                   cycle_vm=True,auto_thresh=True,filter_type='otsu',store_show=False,img_tag='',
-                                  meta_number=None,image_channel=1,save_max=False,rescale_factor=255, meta_stage_loop=True,t_sample=1):
+                                  meta_number=None,image_channel=1,save_max=False,rescale_factor=255, meta_stage_loop=True,t_sample=1,z_stack=False):
     former_path = os.getcwd()
     # if we are reading the data from a .vsi file then use bioformats procedure for reading everything in
     if vsi:
         if cycle_vm:
             javabridge.start_vm(class_path=bioformats.JARS)
         # read in metadata using bioformats and make ararys for t ans z slices
-        metadata = v.extract_metadata(filepath, cycle_vm=False,meta_number=meta_number,stage_loop=meta_stage_loop)
+        metadata = v.extract_metadata(filepath, cycle_vm=False,meta_number=meta_number,stage_loop=meta_stage_loop,z_stack=z_stack)
         t_slices = np.arange(0, metadata['size_T']-1)
         t_slices=t_slices[::t_sample]
         t_slices_scaled = t_slices * float(metadata['cycle time'])
